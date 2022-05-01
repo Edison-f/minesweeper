@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.graphics.Color;
 
@@ -60,17 +61,25 @@ public class Grid {
                 index += 1;
             }
         }
-
-        
-    }   
+    }
     
     public void render() {
         for(int i = 0; i < height; i++) {
             for(int j = 0; j < width; j++) {
                 shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
                 shapeRenderer.setColor(Color.DARK_GRAY);
-                shapeRenderer.rect(j * windowWidth / width + windowWidth / 15, i * windowHeight / height 
-                    + windowHeight / 15, (windowWidth / 20 * (windowWidth - windowWidth / 10)) / width, (windowHeight / 20 * (windowHeight - windowHeight / 10)) / height);
+                shapeRenderer.rect(j * ((windowWidth - windowWidth / 8) - windowWidth / 40) / width + windowWidth / 14, 
+                    i * ((windowHeight - windowHeight / 9) - windowHeight / 40) / height + windowHeight / 14, 
+                    (((windowWidth - windowWidth / 8) - windowWidth / 40) / width), 
+                    (((windowHeight - windowHeight / 9) - windowHeight / 40) / height));
+                shapeRenderer.end();
+
+                shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+                shapeRenderer.setColor(Color.BLACK);
+                shapeRenderer.rect(j * ((windowWidth - windowWidth / 8) - windowWidth / 40) / width + windowWidth / 14, 
+                    i * ((windowHeight - windowHeight / 9) - windowHeight / 40) / height + windowHeight / 14, 
+                    (((windowWidth - windowWidth / 8) - windowWidth / 40) / width), 
+                    (((windowHeight - windowHeight / 9) - windowHeight / 40) / height));
                 shapeRenderer.end();
             }
         }
