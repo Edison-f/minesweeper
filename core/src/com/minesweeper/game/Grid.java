@@ -64,22 +64,27 @@ public class Grid {
     }
     
     public void render() {
+        int tileSize; 
+        tileSize = Math.min((((windowWidth - windowWidth / 8) - windowWidth / 40) / width), 
+            (((windowHeight - windowHeight / 8) - windowHeight / 40) / height));
+        int heightOffset = (windowHeight - (tileSize * height)) / 2;
+        int widthOffset = (windowWidth - (tileSize * width)) / 2;
         for(int i = 0; i < height; i++) {
             for(int j = 0; j < width; j++) {
                 shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
                 shapeRenderer.setColor(Color.DARK_GRAY);
-                shapeRenderer.rect(j * ((windowWidth - windowWidth / 8) - windowWidth / 40) / width + windowWidth / 14, 
-                    i * ((windowHeight - windowHeight / 9) - windowHeight / 40) / height + windowHeight / 14, 
-                    (((windowWidth - windowWidth / 8) - windowWidth / 40) / width), 
-                    (((windowHeight - windowHeight / 9) - windowHeight / 40) / height));
+                shapeRenderer.rect(j * tileSize + widthOffset,
+                    i * tileSize + heightOffset,
+                    tileSize, 
+                    tileSize );
                 shapeRenderer.end();
 
                 shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
                 shapeRenderer.setColor(Color.BLACK);
-                shapeRenderer.rect(j * ((windowWidth - windowWidth / 8) - windowWidth / 40) / width + windowWidth / 14, 
-                    i * ((windowHeight - windowHeight / 9) - windowHeight / 40) / height + windowHeight / 14, 
-                    (((windowWidth - windowWidth / 8) - windowWidth / 40) / width), 
-                    (((windowHeight - windowHeight / 9) - windowHeight / 40) / height));
+                shapeRenderer.rect(j * tileSize + widthOffset, 
+                    i * tileSize + heightOffset, 
+                    tileSize, 
+                    tileSize);
                 shapeRenderer.end();
             }
         }

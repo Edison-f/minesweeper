@@ -45,7 +45,7 @@ public class Minesweeper extends ApplicationAdapter {
 		shapeRenderer = new ShapeRenderer();
 		shapeRenderer.setAutoShapeType(true);
 
-		grid = new Grid(9, 9, 10, shapeRenderer);
+		grid = new Grid(13, 9, 10, shapeRenderer);
 
 		// img = new Texture("badlogic.jpg");
 	}
