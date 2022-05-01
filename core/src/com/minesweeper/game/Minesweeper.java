@@ -51,13 +51,11 @@ public class Minesweeper extends ApplicationAdapter {
 		camera.update();
 		batch.setProjectionMatrix(camera.combined);
 		periodic();
-		batch.begin();
-		font.draw(batch, "x: " + touchInputs[0], 30, 50);
-		font.draw(batch, "y: " + touchInputs[1], 30, 30);
 		shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-		shapeRenderer.setColor(Color.GRAY);
-		shapeRenderer.rect(width / 400, height / 400, (width - width / 400), (height - height / 400));
+		shapeRenderer.setColor(Color.LIGHT_GRAY);
+		shapeRenderer.rect(width / 20, height / 20, (width - width / 10), (height - height / 10));
 		shapeRenderer.end();
+		batch.begin();
 		font.draw(batch, "x: " + touchInputs[0], 30, 50);
 		font.draw(batch, "y: " + touchInputs[1], 30, 30);
 		batch.end();
