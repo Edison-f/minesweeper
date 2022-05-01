@@ -6,7 +6,11 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.utils.ScreenUtils;
+import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.graphics.Color;
 
 public class Minesweeper extends ApplicationAdapter {
 	SpriteBatch batch;
@@ -16,32 +20,46 @@ public class Minesweeper extends ApplicationAdapter {
 	public static final float PIXEL_PER_METER = 32f;
 
 	public static int[] touchInputs = new int[2];
-
+	private ShapeRenderer shapeRenderer;
 	private OrthographicCamera camera;
 
 	BitmapFont font;
+	
+	int width;
+	int height;
 
 	@Override
 	public void create () {
+		width = Gdx.graphics.getWidth();
+		height = Gdx.graphics.getHeight();
+
 		camera = new OrthographicCamera();
 		camera.setToOrtho(false, Gdx.graphics.getWidth() / SCALE, Gdx.graphics.getHeight() / SCALE);
 		
 		font = new BitmapFont();
 
 		batch = new SpriteBatch();
+
+		shapeRenderer = new ShapeRenderer();
+		shapeRenderer.setAutoShapeType(true);
 		// img = new Texture("badlogic.jpg");
 	}
 
 	@Override
 	public void render () {
-		ScreenUtils.clear(0, 0, 0, 0);
+		ScreenUtils.clear(1, 1, 1, 1);
 		camera.update();
 		batch.setProjectionMatrix(camera.combined);
 		periodic();
 		batch.begin();
 		font.draw(batch, "x: " + touchInputs[0], 30, 50);
 		font.draw(batch, "y: " + touchInputs[1], 30, 30);
-		// batch.draw(img, 500, 0);
+		shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+		shapeRenderer.setColor(Color.GRAY);
+		shapeRenderer.rect(width / 400, height / 400, (width - width / 400), (height - height / 400));
+		shapeRenderer.end();
+		font.draw(batch, "x: " + touchInputs[0], 30, 50);
+		font.draw(batch, "y: " + touchInputs[1], 30, 30);
 		batch.end();
 	}
 	
@@ -65,3 +83,8 @@ public class Minesweeper extends ApplicationAdapter {
 		setTouchInputs();
 	}
 }
+	
+	
+	
+
+
