@@ -28,6 +28,8 @@ public class Minesweeper extends ApplicationAdapter {
 	int width;
 	int height;
 
+	Grid grid;
+
 	@Override
 	public void create () {
 		width = Gdx.graphics.getWidth();
@@ -42,6 +44,9 @@ public class Minesweeper extends ApplicationAdapter {
 
 		shapeRenderer = new ShapeRenderer();
 		shapeRenderer.setAutoShapeType(true);
+
+		grid = new Grid(9, 9, 10, shapeRenderer);
+
 		// img = new Texture("badlogic.jpg");
 	}
 
@@ -55,6 +60,7 @@ public class Minesweeper extends ApplicationAdapter {
 		shapeRenderer.setColor(Color.LIGHT_GRAY);
 		shapeRenderer.rect(width / 20, height / 20, (width - width / 10), (height - height / 10));
 		shapeRenderer.end();
+		grid.render();
 		batch.begin();
 		font.draw(batch, "x: " + touchInputs[0], 30, 50);
 		font.draw(batch, "y: " + touchInputs[1], 30, 30);
