@@ -45,7 +45,7 @@ public class Minesweeper extends ApplicationAdapter {
 		shapeRenderer = new ShapeRenderer();
 		shapeRenderer.setAutoShapeType(true);
 
-		grid = new Grid(13, 9, 10, shapeRenderer);
+		grid = new Grid(13, 6, 4, shapeRenderer);
 		grid.generateGrid();
 
 	}
@@ -84,6 +84,7 @@ public class Minesweeper extends ApplicationAdapter {
 	
 	public void periodic() {
 		setTouchInputs();
+		grid.touchDetection(touchInputs[0], touchInputs[1]);
 	}
 }
 	

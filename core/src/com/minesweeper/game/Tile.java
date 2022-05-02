@@ -99,5 +99,9 @@ public class Tile {
         currState = state;
     }
 
-    
+    public void tapped() {
+        if(currState == State.HIDDEN) {
+            currState = State.REVEALED;
+        }
+    }
 }

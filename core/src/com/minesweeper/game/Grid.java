@@ -7,6 +7,8 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import java.util.*;
 
@@ -27,6 +29,9 @@ public class Grid {
 
     private Tile[][] grid;
 
+    private BitmapFont font;
+    private SpriteBatch batch;
+
     public Grid(int width, int height, int numMines, ShapeRenderer shapeRenderer) {
         this.width = width;
         this.height = height;
@@ -43,6 +48,9 @@ public class Grid {
 
         
         this.shapeRenderer = shapeRenderer;
+
+        font = new BitmapFont();
+        batch = new SpriteBatch();
     }
 
     /**
@@ -62,7 +70,7 @@ public class Grid {
         
         List<Tile> unsortedArray = Arrays.asList(unsortedList);
         Collections.shuffle(unsortedArray);
-        unsortedArray.toArray(sortedList);
+        unsortedArray.toArray(  sortedList);
 
         int index = 0;
         grid = new Tile[height][width];
@@ -82,5 +90,11 @@ public class Grid {
         }
     }
     
-
+    public void touchDetection(int x, int y) {
+        int xIndex = (x - widthOffset) / tileSize;
+        int yIndex = (((-1 * y) - heightOffset + windowHeight)) / tileSize;
+        if(xIndex >= 0 && xIndex < width && yIndex >= 0 && yIndex < height) {
+            grid[yIndex][xIndex].tapped();
+        }
+    }
 }
