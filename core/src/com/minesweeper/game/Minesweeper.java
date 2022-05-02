@@ -84,7 +84,9 @@ public class Minesweeper extends ApplicationAdapter {
 	
 	public void periodic() {
 		setTouchInputs();
-		grid.touchDetection(touchInputs[0], touchInputs[1]);
+		if(Gdx.input.isTouched()){
+			grid.touchDetection(touchInputs[0], touchInputs[1]);
+		}
 	}
 }
 	

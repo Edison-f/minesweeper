@@ -48,15 +48,22 @@ public class Tile {
                 shapeRenderer.end();
                 break;
             case REVEALED:
-                shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-                shapeRenderer.setColor(Color.valueOf("E7E7E7"));
-                shapeRenderer.rect(x, y, tileSize, tileSize );
-                shapeRenderer.end();
 
                 shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
                 shapeRenderer.setColor(Color.BLACK);
                 shapeRenderer.rect(x, y, tileSize, tileSize );
                 shapeRenderer.end();
+                if(isMine) {
+                    shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+                    shapeRenderer.setColor(Color.RED);
+                    shapeRenderer.rect(x, y, tileSize, tileSize );
+                    shapeRenderer.end();
+                } else {
+                    shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+                    shapeRenderer.setColor(Color.valueOf("E7E7E7"));
+                    shapeRenderer.rect(x, y, tileSize, tileSize );
+                    shapeRenderer.end();
+                }
                 break;
         }
     }
