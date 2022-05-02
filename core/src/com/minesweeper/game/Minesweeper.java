@@ -46,8 +46,8 @@ public class Minesweeper extends ApplicationAdapter {
 		shapeRenderer.setAutoShapeType(true);
 
 		grid = new Grid(13, 9, 10, shapeRenderer);
+		grid.generateGrid();
 
-		// img = new Texture("badlogic.jpg");
 	}
 
 	@Override
@@ -70,7 +70,6 @@ public class Minesweeper extends ApplicationAdapter {
 	@Override
 	public void dispose () {
 		batch.dispose();
-		img.dispose();
 	}
 
 	public void setTouchInputs() {

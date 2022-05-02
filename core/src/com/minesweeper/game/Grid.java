@@ -17,6 +17,10 @@ public class Grid {
     private int windowHeight;
     private int windowWidth;
 
+    private int tileSize;
+    private int heightOffset;
+    private int widthOffset;
+
     private int numMines;
 
     private ShapeRenderer shapeRenderer;
@@ -31,6 +35,13 @@ public class Grid {
         this.windowHeight = Gdx.graphics.getHeight();
         this.windowWidth = Gdx.graphics.getWidth();
 
+        tileSize = Math.min((((windowWidth - windowWidth / 8) - windowWidth / 40) / width), 
+            (((windowHeight - windowHeight / 8) - windowHeight / 40) / height));
+
+        heightOffset = (windowHeight - (tileSize * height)) / 2;
+        widthOffset = (windowWidth - (tileSize * width)) / 2;
+
+        
         this.shapeRenderer = shapeRenderer;
     }
 
@@ -56,7 +67,7 @@ public class Grid {
         int index = 0;
         grid = new Tile[height][width];
         for(int i = 0; i < height; i++){
-            for(int j = 0; i < width; i++){
+            for(int j = 0; j < width; j++){
                 grid[i][j] = sortedList[index];
                 index += 1;
             }
@@ -64,28 +75,9 @@ public class Grid {
     }
     
     public void render() {
-        int tileSize; 
-        tileSize = Math.min((((windowWidth - windowWidth / 8) - windowWidth / 40) / width), 
-            (((windowHeight - windowHeight / 8) - windowHeight / 40) / height));
-        int heightOffset = (windowHeight - (tileSize * height)) / 2;
-        int widthOffset = (windowWidth - (tileSize * width)) / 2;
         for(int i = 0; i < height; i++) {
             for(int j = 0; j < width; j++) {
-                shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-                shapeRenderer.setColor(Color.DARK_GRAY);
-                shapeRenderer.rect(j * tileSize + widthOffset,
-                    i * tileSize + heightOffset,
-                    tileSize, 
-                    tileSize );
-                shapeRenderer.end();
-
-                shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
-                shapeRenderer.setColor(Color.BLACK);
-                shapeRenderer.rect(j * tileSize + widthOffset, 
-                    i * tileSize + heightOffset, 
-                    tileSize, 
-                    tileSize);
-                shapeRenderer.end();
+                grid[i][j].render(j * tileSize + widthOffset, i * tileSize + heightOffset, tileSize, shapeRenderer);
             }
         }
     }
