@@ -60,7 +60,11 @@ public class Tile {
                     shapeRenderer.end();
                 } else {
                     shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-                    shapeRenderer.setColor(Color.valueOf("E7E7E7"));
+                    if(adjacentMines > 0){
+                        shapeRenderer.setColor(Color.CHARTREUSE);
+                    } else {
+                        shapeRenderer.setColor(Color.valueOf("E7E7E7"));
+                    }
                     shapeRenderer.rect(x, y, tileSize, tileSize );
                     shapeRenderer.end();
                 }

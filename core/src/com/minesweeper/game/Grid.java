@@ -29,9 +29,6 @@ public class Grid {
 
     private Tile[][] grid;
 
-    private BitmapFont font;
-    private SpriteBatch batch;
-
     public Grid(int width, int height, int numMines, ShapeRenderer shapeRenderer) {
         this.width = width;
         this.height = height;
@@ -49,8 +46,6 @@ public class Grid {
         
         this.shapeRenderer = shapeRenderer;
 
-        font = new BitmapFont();
-        batch = new SpriteBatch();
     }
 
     /**
@@ -97,4 +92,54 @@ public class Grid {
             grid[yIndex][xIndex].tapped();
         }
     }
+
+    public void generateAdjacentMines() {
+        int mineCount;
+        for(int i = 0; i < height; i++) {
+            for(int j = 0; j < width; j++) {
+                mineCount = 0;
+                if(i != 0) {
+                    if(j != 0) {
+                        if(grid[i - 1][j - 1].isMine()) {
+                            mineCount += 1;
+                        }
+                    }
+                    if(grid[i - 1][j].isMine()) {
+                        mineCount += 1;
+                    }
+                    if(j != width - 1) {
+                        if(grid[i - 1][j + 1].isMine()) {
+                            mineCount += 1;
+                        }
+                    }
+                }
+                if(j != 0) {
+                    if(i != height - 1) {
+                        if(grid[i + 1][j - 1].isMine()) {
+                            mineCount += 1;
+                        }
+                    }
+                    if(grid[i][j - 1].isMine()) {
+                        mineCount += 1;
+                    }
+                }
+                if(i != height - 1) {
+                    if(j != width - 1) {
+                        if(grid[i + 1][j + 1].isMine()) {
+                            mineCount += 1;
+                        }
+                    }
+                    if(grid[i + 1][j].isMine()) {
+                        mineCount += 1;
+                    }
+                }
+                if(j != width - 1) {
+                    if(grid[i][j + 1].isMine()) {
+                        mineCount += 1;
+                    }
+                }
+                grid[i][j].setAdjacentMines(mineCount);
+            }
+        }
+     }
 }
