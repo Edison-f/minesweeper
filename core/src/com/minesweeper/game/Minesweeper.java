@@ -29,6 +29,7 @@ public class Minesweeper extends ApplicationAdapter {
 	int height;
 
 	Grid grid;
+	UI ui;
 
 	@Override
 	public void create () {
@@ -46,9 +47,11 @@ public class Minesweeper extends ApplicationAdapter {
 		shapeRenderer = new ShapeRenderer();
 		shapeRenderer.setAutoShapeType(false);
 
-		grid = new Grid(15, 10, 10, shapeRenderer, font, batch);
+		grid = new Grid(9, 9, 10, shapeRenderer, font, batch);
 		grid.generateGrid();
 		grid.generateAdjacentMines();
+
+		ui = new UI(batch, shapeRenderer, font, grid);
 
 	}
 
@@ -58,7 +61,7 @@ public class Minesweeper extends ApplicationAdapter {
 		periodic();
 		shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
 		shapeRenderer.setColor(Color.LIGHT_GRAY);
-		shapeRenderer.rect(width / 20, height / 20, (width - width / 10), (height - height / 10));
+		shapeRenderer.rect(width / 20, height / 5, (width - width / 10), (height - height / 4));
 		shapeRenderer.end();
 		batch.begin();
 		font.draw(batch, "x: " + touchInputs[0], 30, 50);
@@ -66,6 +69,7 @@ public class Minesweeper extends ApplicationAdapter {
 		// font.draw(batch, "here", touchInputs[0] / 2, (touchInputs[1] * -1 + Gdx.graphics.getHeight()) / 2, 0, 0, false);
 		batch.end();
 		grid.render();
+		ui.render();
 		camera.update();
 		batch.setProjectionMatrix(camera.combined);
 	}
@@ -92,6 +96,8 @@ public class Minesweeper extends ApplicationAdapter {
 		if(Gdx.input.isTouched()){
 			grid.touchDetection(touchInputs[0], touchInputs[1]);
 		}
+		ui.processInputs(touchInputs[0], (height - touchInputs[1]));
+		ui.stateMachine();
 	}
 }
 	
