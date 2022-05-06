@@ -1,6 +1,10 @@
 package com.minesweeper.game;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
 public class Tile {
@@ -15,15 +19,28 @@ public class Tile {
 
     private State currState;
 
-    private int adjacentMines;
+    private int adjacentMines = 999;
 
-    public Tile(boolean isMine) {
+    private BitmapFont font;
+    private SpriteBatch batch;
+
+    private int windowHeight;
+    private int windowWidth;
+
+    public Tile(boolean isMine, BitmapFont font, SpriteBatch batch) {
         this.isMine = isMine;
         this.adjacentMines = 0;
         this.currState = State.HIDDEN;
+        
+        this.font = font;
+        this.batch = batch;
+    
+        this.windowHeight = Gdx.graphics.getHeight();
+        this.windowWidth = Gdx.graphics.getWidth();
     }
 
-    public void render(int x, int y, int tileSize, ShapeRenderer shapeRenderer) {
+    public void renderTile(int x, int y, int tileSize, ShapeRenderer shapeRenderer) {
+        
         switch (currState) {
             case HIDDEN:
                 shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
@@ -70,6 +87,16 @@ public class Tile {
                 }
                 break;
         }
+        
+        
+    }
+
+    public void renderNumbers(int x, int y) {
+        if(currState == State.REVEALED) {
+            batch.begin();
+            font.draw(batch, "" + adjacentMines, x / 2, (y * -1 + windowHeight) / 2);
+            batch.end();
+        }
     }
 
     public boolean isMine() {
@@ -114,5 +141,9 @@ public class Tile {
         if(currState == State.HIDDEN) {
             currState = State.REVEALED;
         }
+    }
+
+    public boolean isRevealed() {
+        return currState == State.REVEALED;
     }
 }

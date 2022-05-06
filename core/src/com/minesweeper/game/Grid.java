@@ -26,10 +26,12 @@ public class Grid {
     private int numMines;
 
     private ShapeRenderer shapeRenderer;
+    private BitmapFont font;
+    private SpriteBatch batch;
 
     private Tile[][] grid;
 
-    public Grid(int width, int height, int numMines, ShapeRenderer shapeRenderer) {
+    public Grid(int width, int height, int numMines, ShapeRenderer shapeRenderer, BitmapFont font, SpriteBatch batch) {
         this.width = width;
         this.height = height;
         this.numMines = numMines;
@@ -43,9 +45,9 @@ public class Grid {
         heightOffset = (windowHeight - (tileSize * height)) / 2;
         widthOffset = (windowWidth - (tileSize * width)) / 2;
 
-        
         this.shapeRenderer = shapeRenderer;
-
+        this.font = font;
+        this.batch = batch;
     }
 
     /**
@@ -57,9 +59,9 @@ public class Grid {
 
         for(int i = 0; i < height * width; i++) {
             if(i < numMines) {
-                unsortedList[i] = new Tile(true);
+                unsortedList[i] = new Tile(true, font, batch);
             } else {
-                unsortedList[i] = new Tile(false);
+                unsortedList[i] = new Tile(false, font, batch);
             }
         }
         
@@ -78,9 +80,13 @@ public class Grid {
     }
     
     public void render() {
-        for(int i = 0; i < height; i++) {
+        for(int i = 0; i < height * 2; i++) {
             for(int j = 0; j < width; j++) {
-                grid[i][j].render(j * tileSize + widthOffset, i * tileSize + heightOffset, tileSize, shapeRenderer);
+                if(i < height) {
+                    grid[i][j].renderTile(j * tileSize + widthOffset, i * tileSize + heightOffset, tileSize, shapeRenderer);
+                    grid[i][j].renderNumbers(j * tileSize + widthOffset + tileSize / 2, windowHeight - (i * tileSize + heightOffset + tileSize / 2));
+                }
+
             }
         }
     }
@@ -90,6 +96,86 @@ public class Grid {
         int yIndex = (((-1 * y) - heightOffset + windowHeight)) / tileSize;
         if(xIndex >= 0 && xIndex < width && yIndex >= 0 && yIndex < height) {
             grid[yIndex][xIndex].tapped();
+            if(grid[yIndex][xIndex].getAdjacentMines() == 0) {
+                autoReveal(xIndex, yIndex);
+            }
+        }
+    }
+
+    public void autoReveal(int x, int y) {
+        System.out.println("x " + x + " y " + y);
+        // System.out.println("down left" + grid[y - 1][x - 1].getAdjacentMines() + " " + grid[y - 1][x - 1].isMine() + " " + grid[y - 1][x - 1].isRevealed());
+        // System.out.println("down" + grid[y][x - 1].getAdjacentMines() + " " + grid[y][x - 1].isMine() + " " + grid[y][x - 1].isRevealed());
+        // System.out.println("down right" + grid[y + 1][x - 1].getAdjacentMines() + " " + grid[y + 1][x - 1].isMine() + " " + grid[y + 1][x - 1].isRevealed());
+        // System.out.println("left" + grid[y - 1][x].getAdjacentMines() + " " + grid[y - 1][x].isMine() + " " + grid[y - 1][x].isRevealed());
+        // System.out.println("right" + grid[y - 1][x + 1].getAdjacentMines() + " " + grid[y - 1][x + 1].isMine() + " " + grid[y - 1][x + 1].isRevealed());
+        // System.out.println("up left" + grid[y - 1][x - 1].getAdjacentMines() + " " + grid[y - 1][x - 1].isMine() + " " + grid[y - 1][x - 1].isRevealed());
+        // System.out.println("up" + grid[y][x + 1].getAdjacentMines() + " " + grid[y][x + 1].isMine() + " " + grid[y][x + 1].isRevealed());
+        // System.out.println("up right" + grid[y + 1][x + 1].getAdjacentMines() + " " + grid[y + 1][x + 1].isMine() + " " + grid[y + 1][x + 1].isRevealed());
+
+        if(y > 0) {
+            // if(x > 0) {
+            //     if(!grid[y - 1][x - 1].isMine() && grid[y - 1][x - 1].isRevealed() == false) {
+            //         grid[y - 1][x - 1].reveal();
+            //         if(grid[y - 1][x - 1].getAdjacentMines() == 0 ){
+            //             autoReveal(x - 1, y - 1);
+            //         }
+            //     }
+            // }
+            if(!grid[y - 1][x].isMine() && grid[y - 1][x].isRevealed() == false) {
+                grid[y - 1][x].reveal();
+                if(grid[y - 1][x].getAdjacentMines() == 0 ){
+                    autoReveal(x, y - 1);
+                }
+            }
+            // if(x < width - 1) {
+            //     if(!grid[y - 1][x + 1].isMine() && grid[y - 1][x + 1].isRevealed() == false) {
+            //         grid[y - 1][x + 1].reveal();
+            //         if(grid[y - 1][x + 1].getAdjacentMines() == 0) {
+            //             autoReveal(x + 1, y - 1);
+            //         }
+            //     }
+            // } 
+        }
+        if(x > 0 && x < width - 1) {
+            // if(y < height - 1) {
+            //     if(!grid[y + 1][x - 1].isMine() && grid[y + 1][x - 1].isRevealed() == false) {
+            //         grid[y + 1][x - 1].reveal();
+            //         if(grid[y + 1][x - 1].getAdjacentMines() == 0) {
+            //             autoReveal(x - 1, y + 1);
+            //         }
+            //     }
+            // }
+            if(!grid[y][x - 1].isMine() && !grid[y][x - 1].isRevealed()) {
+                grid[y][x - 1].reveal();
+                if(grid[y][x - 1].getAdjacentMines() == 0) {
+                    autoReveal(x - 1, y);
+                }
+            }
+        }
+        if(y < height - 1) {
+            // if(x < width - 1) {
+            //     if(!grid[y + 1][x + 1].isMine() && grid[y + 1][x + 1].isRevealed() == false) {
+            //         grid[y + 1][x + 1].reveal();
+            //         if(grid[y + 1][x + 1].getAdjacentMines() == 0) {
+            //             autoReveal(x + 1, y + 1);
+            //         }
+            //     }
+            // }
+            if(!grid[y + 1][x].isMine() && grid[y + 1][x].isRevealed() == false) {
+                grid[y + 1][x].reveal();
+                if(grid[y + 1][x].getAdjacentMines() == 0) {
+                    autoReveal(x, y + 1);
+                }
+            }
+        }
+        if(x < width - 1) {
+            if(!grid[y][x + 1].isMine() && grid[y][x + 1].isRevealed() == false) {
+                grid[y][x + 1].reveal();
+                if(grid[y][x + 1].getAdjacentMines() == 0) {
+                    autoReveal(x + 1, y);
+                }
+            }
         }
     }
 

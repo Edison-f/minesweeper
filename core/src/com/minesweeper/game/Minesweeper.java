@@ -38,14 +38,15 @@ public class Minesweeper extends ApplicationAdapter {
 		camera = new OrthographicCamera();
 		camera.setToOrtho(false, Gdx.graphics.getWidth() / SCALE, Gdx.graphics.getHeight() / SCALE);
 		
-		font = new BitmapFont();
+		font = new BitmapFont(false);
+		
 
 		batch = new SpriteBatch();
 
 		shapeRenderer = new ShapeRenderer();
-		shapeRenderer.setAutoShapeType(true);
+		shapeRenderer.setAutoShapeType(false);
 
-		grid = new Grid(13, 6, 10, shapeRenderer);
+		grid = new Grid(15, 10, 10, shapeRenderer, font, batch);
 		grid.generateGrid();
 		grid.generateAdjacentMines();
 
@@ -54,18 +55,19 @@ public class Minesweeper extends ApplicationAdapter {
 	@Override
 	public void render () {
 		ScreenUtils.clear(1, 1, 1, 1);
-		camera.update();
-		batch.setProjectionMatrix(camera.combined);
 		periodic();
 		shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
 		shapeRenderer.setColor(Color.LIGHT_GRAY);
 		shapeRenderer.rect(width / 20, height / 20, (width - width / 10), (height - height / 10));
 		shapeRenderer.end();
-		grid.render();
 		batch.begin();
 		font.draw(batch, "x: " + touchInputs[0], 30, 50);
 		font.draw(batch, "y: " + touchInputs[1], 30, 30);
+		// font.draw(batch, "here", touchInputs[0] / 2, (touchInputs[1] * -1 + Gdx.graphics.getHeight()) / 2, 0, 0, false);
 		batch.end();
+		grid.render();
+		camera.update();
+		batch.setProjectionMatrix(camera.combined);
 	}
 	
 	@Override
