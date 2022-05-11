@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
+import java.sql.Struct;
 import java.util.*;
 
 public class Grid {
@@ -31,6 +32,8 @@ public class Grid {
 
     private Tile[][] grid;
 
+    private int[] cursorLocation;
+
     public Grid(int width, int height, int numMines, ShapeRenderer shapeRenderer, BitmapFont font, SpriteBatch batch) {
         this.width = width;
         this.height = height;
@@ -48,6 +51,10 @@ public class Grid {
         this.shapeRenderer = shapeRenderer;
         this.font = font;
         this.batch = batch;
+
+        cursorLocation = new int[] {0, 0};
+
+        Gdx.gl.glLineWidth(4);
     }
 
     /**
@@ -94,7 +101,11 @@ public class Grid {
         for(int i = 0; i < height * 2; i++) {
             for(int j = 0; j < width; j++) {
                 if(i < height) {
-                    grid[i][j].renderTile(j * tileSize + widthOffset, i * tileSize + heightOffset, tileSize, shapeRenderer);
+                    if(cursorLocation[0] == i && cursorLocation[1] == j) {
+                        grid[i][j].renderTile(j * tileSize + widthOffset, i * tileSize + heightOffset, tileSize, shapeRenderer, false);                    
+                    } else {
+                        grid[i][j].renderTile(j * tileSize + widthOffset, i * tileSize + heightOffset, tileSize, shapeRenderer, true);
+                    }
                     grid[i][j].renderNumbers(j * tileSize + widthOffset + tileSize / 2, windowHeight - (i * tileSize + heightOffset + tileSize / 2));
                 }
 
@@ -105,10 +116,12 @@ public class Grid {
     public void touchDetection(int x, int y) {
         int xIndex = (x - widthOffset) / tileSize;
         int yIndex = (((-1 * y) - heightOffset + windowHeight)) / tileSize;
-        if(xIndex >= 0 && xIndex < width && yIndex >= 0 && yIndex < height) {
-            grid[yIndex][xIndex].tapped();
-            if(grid[yIndex][xIndex].getAdjacentMines() == 0) {
-                autoReveal(xIndex, yIndex);
+        if(((-1 * y) - heightOffset + windowHeight) > 0) {   
+            if(xIndex >= 0 && xIndex < width && yIndex >= 0 && yIndex < height) {
+                grid[yIndex][xIndex].tapped();
+                if(grid[yIndex][xIndex].getAdjacentMines() == 0) {
+                    autoReveal(xIndex, yIndex);
+                }
             }
         }
     }
@@ -229,4 +242,35 @@ public class Grid {
             }
         }
      }
+
+     public void moveUp() {
+        if(cursorLocation[0] < height - 1) {
+            cursorLocation[0] += 1;
+        }
+     }
+
+    public void moveDown() {
+        if(cursorLocation[0] > 0) {
+            cursorLocation[0] -= 1;
+        }
+    }
+
+    public void moveLeft() {
+        if(cursorLocation[1] > 0) {
+            cursorLocation[1] -= 1;
+        }
+    }
+
+    public void moveRight() {
+        if(cursorLocation[1] < width - 1) {
+            cursorLocation[1] += 1;
+        }
+    }
+
+    public void interact() {
+        grid[cursorLocation[0]][cursorLocation[1]].tapped();
+        if(grid[cursorLocation[0]][cursorLocation[1]].getAdjacentMines() == 0) {
+            autoReveal(cursorLocation[1], cursorLocation[0]);
+        }
+    }
 }

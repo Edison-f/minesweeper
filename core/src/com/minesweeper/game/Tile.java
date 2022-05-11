@@ -39,17 +39,22 @@ public class Tile {
         this.windowWidth = Gdx.graphics.getWidth();
     }
 
-    public void renderTile(int x, int y, int tileSize, ShapeRenderer shapeRenderer) {
-        
+    public void renderTile(int x, int y, int tileSize, ShapeRenderer shapeRenderer, boolean isSelected) {
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+        if(isSelected) {
+            shapeRenderer.setColor(Color.BLACK);
+            Gdx.gl.glLineWidth(2);
+        } else {
+            shapeRenderer.setColor(Color.valueOf("0088ff"));
+            Gdx.gl.glLineWidth(8);
+        }
+        shapeRenderer.rect(x, y, tileSize, tileSize );
+        shapeRenderer.end();
+
         switch (currState) {
             case HIDDEN:
                 shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
                 shapeRenderer.setColor(Color.DARK_GRAY);
-                shapeRenderer.rect(x, y, tileSize, tileSize );
-                shapeRenderer.end();
-
-                shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
-                shapeRenderer.setColor(Color.BLACK);
                 shapeRenderer.rect(x, y, tileSize, tileSize );
                 shapeRenderer.end();
                 break;
@@ -58,18 +63,8 @@ public class Tile {
                 shapeRenderer.setColor(Color.RED);
                 shapeRenderer.rect(x, y, tileSize, tileSize );
                 shapeRenderer.end();
-
-                shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
-                shapeRenderer.setColor(Color.BLACK);
-                shapeRenderer.rect(x, y, tileSize, tileSize );
-                shapeRenderer.end();
                 break;
             case REVEALED:
-
-                shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
-                shapeRenderer.setColor(Color.BLACK);
-                shapeRenderer.rect(x, y, tileSize, tileSize );
-                shapeRenderer.end();
                 if(isMine) {
                     shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
                     shapeRenderer.setColor(Color.RED);
