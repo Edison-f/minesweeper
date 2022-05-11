@@ -1,16 +1,10 @@
 package com.minesweeper.game;
 
-import java.util.ArrayList;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
-import com.badlogic.gdx.utils.Array;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
-import java.sql.Struct;
 import java.util.*;
 
 public class Grid {
@@ -101,16 +95,14 @@ public class Grid {
         for(int i = 0; i < height * 2; i++) {
             for(int j = 0; j < width; j++) {
                 if(i < height) {
-                    if(cursorLocation[0] == i && cursorLocation[1] == j) {
-                        grid[i][j].renderTile(j * tileSize + widthOffset, i * tileSize + heightOffset, tileSize, shapeRenderer, false);                    
-                    } else {
-                        grid[i][j].renderTile(j * tileSize + widthOffset, i * tileSize + heightOffset, tileSize, shapeRenderer, true);
-                    }
-                    grid[i][j].renderNumbers(j * tileSize + widthOffset + tileSize / 2, windowHeight - (i * tileSize + heightOffset + tileSize / 2));
+                    grid[i][j].renderTile(j * tileSize + widthOffset, i * tileSize + heightOffset, tileSize, shapeRenderer, false);
+                    grid[i][j].renderNumbers(j * tileSize + widthOffset + tileSize / 2, windowHeight - (i * tileSize + heightOffset + tileSize / 2));                    
                 }
 
             }
         }
+        grid[cursorLocation[0]][cursorLocation[1]].renderTile(cursorLocation[1] * tileSize + widthOffset, cursorLocation[0] * tileSize + heightOffset, tileSize, shapeRenderer, true);
+        grid[cursorLocation[0]][cursorLocation[1]].renderNumbers(cursorLocation[1] * tileSize + widthOffset + tileSize / 2, windowHeight - (cursorLocation[0] * tileSize + heightOffset + tileSize / 2));                    
     }
     
     public void touchDetection(int x, int y) {
@@ -267,10 +259,22 @@ public class Grid {
         }
     }
 
-    public void interact() {
+    public void reveal() {
         grid[cursorLocation[0]][cursorLocation[1]].tapped();
-        if(grid[cursorLocation[0]][cursorLocation[1]].getAdjacentMines() == 0) {
+        if(grid[cursorLocation[0]][cursorLocation[1]].getAdjacentMines() == 0 && grid[cursorLocation[0]][cursorLocation[1]].isFlagged() == false) {
             autoReveal(cursorLocation[1], cursorLocation[0]);
         }
+    }
+
+    public boolean flag() {
+        return grid[cursorLocation[0]][cursorLocation[1]].flag();
+    }
+
+    public boolean isSelectedRevealed() {
+        return grid[cursorLocation[0]][cursorLocation[1]].isRevealed();
+    }
+
+    public int getMineCount() {
+        return numMines;
     }
 }

@@ -31,6 +31,8 @@ public class Minesweeper extends ApplicationAdapter {
 	Grid grid;
 	UI ui;
 
+	int mineCount = 10;
+
 	@Override
 	public void create () {
 		width = Gdx.graphics.getWidth();
@@ -47,11 +49,11 @@ public class Minesweeper extends ApplicationAdapter {
 		shapeRenderer = new ShapeRenderer();
 		shapeRenderer.setAutoShapeType(false);
 
-		grid = new Grid(9, 9, 10, shapeRenderer, font, batch);
+		grid = new Grid(9, 9, mineCount, shapeRenderer, font, batch);
 		grid.generateGrid();
 		grid.generateAdjacentMines();
 
-		ui = new UI(batch, shapeRenderer, font, grid);
+		ui = new UI(batch, shapeRenderer, font, grid, mineCount);
 
 	}
 
