@@ -1,7 +1,5 @@
 package com.minesweeper.game;
 
-import java.security.acl.LastOwnerException;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
@@ -158,18 +156,19 @@ public class UI {
         // Check if the user clicked on the reset button
         if (x > resetOffsetX && x < resetOffsetX + windowWidth / 5 && y > resetOffsetY && y < resetOffsetY + windowHeight / 10) {
             currState = State.RESET;
+            flagCounter = 0;
         } else if(currState != State.INTERACT && currState == lastState) {
             currState = State.NONE;
         }
 
         // Check if the user clicked on the dpad
-        if(x > dPadOffsetX && x < dPadOffsetX + dPadWidth && y > dPadOffsetY && y < dPadOffsetY + dPadHeight || Gdx.input.isKeyPressed(Input.Keys.A)) {
+        if(x > dPadOffsetX && x < dPadOffsetX + dPadWidth && y > dPadOffsetY && y < dPadOffsetY + dPadHeight || Gdx.input.isKeyPressed(Input.Keys.A) || Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
             currState = State.LEFT;
-        } else if(x > dPadOffsetX + windowWidth / 8 && x < dPadOffsetX + windowWidth / 8 + dPadWidth && y > dPadOffsetY - windowHeight / 15 && y < dPadOffsetY - windowHeight / 15 + dPadHeight || Gdx.input.isKeyPressed(Input.Keys.S)) {
+        } else if(x > dPadOffsetX + windowWidth / 8 && x < dPadOffsetX + windowWidth / 8 + dPadWidth && y > dPadOffsetY - windowHeight / 15 && y < dPadOffsetY - windowHeight / 15 + dPadHeight || Gdx.input.isKeyPressed(Input.Keys.S) || Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
             currState = State.DOWN;
-        } else if(x > dPadOffsetX + windowWidth / 8 && x < dPadOffsetX + windowWidth / 8 + dPadWidth && y > dPadOffsetY + windowHeight / 15 && y < dPadOffsetY + windowHeight / 15 + dPadHeight || Gdx.input.isKeyPressed(Input.Keys.W)) {
+        } else if(x > dPadOffsetX + windowWidth / 8 && x < dPadOffsetX + windowWidth / 8 + dPadWidth && y > dPadOffsetY + windowHeight / 15 && y < dPadOffsetY + windowHeight / 15 + dPadHeight || Gdx.input.isKeyPressed(Input.Keys.W) || Gdx.input.isKeyPressed(Input.Keys.UP)) {
             currState = State.UP;
-        } else if(x > dPadOffsetX + windowWidth / 4 && x < dPadOffsetX + windowWidth / 4 + dPadWidth && y > dPadOffsetY && y < dPadOffsetY + dPadHeight || Gdx.input.isKeyPressed(Input.Keys.D)) {
+        } else if(x > dPadOffsetX + windowWidth / 4 && x < dPadOffsetX + windowWidth / 4 + dPadWidth && y > dPadOffsetY && y < dPadOffsetY + dPadHeight || Gdx.input.isKeyPressed(Input.Keys.D) || Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
             currState = State.RIGHT;
         } 
 

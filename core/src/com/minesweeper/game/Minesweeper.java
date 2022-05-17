@@ -50,8 +50,7 @@ public class Minesweeper extends ApplicationAdapter {
 		shapeRenderer.setAutoShapeType(false);
 
 		grid = new Grid(9, 9, mineCount, shapeRenderer, font, batch);
-		grid.generateGrid();
-		grid.generateAdjacentMines();
+		grid.resetGrid();
 
 		ui = new UI(batch, shapeRenderer, font, grid, mineCount);
 
