@@ -92,6 +92,8 @@ public class Grid {
 
         if(grid[cursorLocation[0]][cursorLocation[1]].isMine() || (grid[cursorLocation[0]][cursorLocation[1]].getAdjacentMines() != 0)) {
             resetGrid();
+            reveal();
+            System.out.println(grid[cursorLocation[0]][cursorLocation[1]].getAdjacentMines());
         }
     }
 
@@ -263,17 +265,17 @@ public class Grid {
     }
 
     public void reveal() {
-        System.out.println("\nRevealing");
+//        System.out.println("\nRevealing");
         grid[cursorLocation[0]][cursorLocation[1]].tapped();
         if(grid[cursorLocation[0]][cursorLocation[1]].getAdjacentMines() == 0 && grid[cursorLocation[0]][cursorLocation[1]].isFlagged() == false) {
             autoReveal(cursorLocation[1], cursorLocation[0]);
-            System.out.println("Zero Reveal");
+//            System.out.println("Zero Reveal");
         } else if(!grid[cursorLocation[0]][cursorLocation[1]].isMine() && nonZeroReqMet(cursorLocation[1], cursorLocation[0])) {
             autoReveal(cursorLocation[1], cursorLocation[0]);
-            System.out.println("Flagged Reveal");
+//            System.out.println("Flagged Reveal");
         } else {
-            System.out.println("Normal Reveal");
-            System.out.println(nonZeroReqMet(cursorLocation[1], cursorLocation[0]));
+//            System.out.println("Normal Reveal");
+//            System.out.println(nonZeroReqMet(cursorLocation[1], cursorLocation[0]));
         }
     }
 
@@ -327,7 +329,7 @@ public class Grid {
                 System.out.println("right");
             }
         }
-        System.out.println("adj flag " + adjacentFlagged);
+//        System.out.println("adj flag " + adjacentFlagged);
         return (adjacentFlagged == grid[y][x].getAdjacentMines());
     }
 

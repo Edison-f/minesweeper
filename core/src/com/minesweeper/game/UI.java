@@ -154,7 +154,7 @@ public class UI {
 
     public void processInputs(int x, int y) {
         // Check if the user clicked on the reset button
-        if (x > resetOffsetX && x < resetOffsetX + windowWidth / 5 && y > resetOffsetY && y < resetOffsetY + windowHeight / 10) {
+        if ((x > resetOffsetX && x < resetOffsetX + windowWidth / 5 && y > resetOffsetY && y < resetOffsetY + windowHeight / 10) || Gdx.input.isKeyPressed(Input.Keys.R)) {
             currState = State.RESET;
             flagCounter = 0;
         } else if(currState != State.INTERACT && currState == lastState) {
