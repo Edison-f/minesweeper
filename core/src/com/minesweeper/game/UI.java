@@ -94,7 +94,7 @@ public class UI {
         this.mineCount = mineCount;
     }
 
-    public void renderResetButton() {
+    private void renderResetButton() {
         // Draw the reset button
         shapeRenderer.begin(ShapeType.Filled);
         if(currState == State.RESET) {
@@ -111,7 +111,7 @@ public class UI {
         shapeRenderer.end();
     }
 
-    public void renderDPad() {
+    private void renderDPad() {
         // Draw the dpad
         shapeRenderer.begin(ShapeType.Filled);
         shapeRenderer.setColor(Color.GRAY);
@@ -130,7 +130,15 @@ public class UI {
         shapeRenderer.end();
     }
 
-    public void renderInteractButton() {
+    private void renderMenu() {
+
+    }
+
+    private void renderResult(boolean won) {
+
+    }
+
+    private void renderInteractButton() {
         // Draw the interact button
         shapeRenderer.begin(ShapeType.Filled);
         if(currState != State.REVEAL || currState != State.FLAG) {
@@ -150,19 +158,24 @@ public class UI {
         shapeRenderer.end();
     }
 
-    public void renderMineCounter() {
+    private void renderMineCounter() {
         // Draw the mine counter
         batch.begin();
         font.draw(batch, "Mines: " + (mineCount - flagCounter), 30, (10 * -1 + windowHeight) / 2);
         batch.end();
     }
-    
+
     public void render() {
         renderResetButton();
         renderDPad();
         renderInteractButton();
         renderMineCounter();
-        
+        if(true) {
+            renderMenu();
+        }
+        if(true) {
+            renderResult(true);
+        }
     }
 
     public void processInputs(int x, int y) {
