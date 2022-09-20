@@ -31,7 +31,7 @@ public class Minesweeper extends ApplicationAdapter {
 	Grid grid;
 	UI ui;
 
-	int mineCount = 10;
+	int mineCount = 20;
 
 	@Override
 	public void create () {

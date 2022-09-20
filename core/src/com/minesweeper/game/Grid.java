@@ -93,7 +93,7 @@ public class Grid {
         if(grid[cursorLocation[0]][cursorLocation[1]].isMine() || (grid[cursorLocation[0]][cursorLocation[1]].getAdjacentMines() != 0)) {
             resetGrid();
             reveal();
-            System.out.println(grid[cursorLocation[0]][cursorLocation[1]].getAdjacentMines());
+//            System.out.println(grid[cursorLocation[0]][cursorLocation[1]].getAdjacentMines());
         }
     }
 
