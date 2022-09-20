@@ -285,17 +285,17 @@ public class Grid {
             if(x > 0) {
                 if(grid[y - 1][x - 1].isFlagged() && grid[y - 1][x - 1].isMine()) {
                     adjacentFlagged += 1;
-                    System.out.println("down left");
+//                    System.out.println("down left");
                 }
             }
             if(grid[y - 1][x].isFlagged() && grid[y - 1][x].isMine()) {
                 adjacentFlagged += 1;
-                System.out.println("down");
+//                System.out.println("down");
             }
             if(x < width - 1) {
                 if(grid[y - 1][x + 1].isFlagged() && grid[y - 1][x + 1].isMine()) {
                     adjacentFlagged += 1;
-                    System.out.println("down right");
+//                    System.out.println("down right");
                 }
             } 
         }
@@ -303,30 +303,30 @@ public class Grid {
             if(y < height - 1) {
                 if(grid[y + 1][x - 1].isFlagged() && grid[y + 1][x - 1].isMine()) {
                     adjacentFlagged += 1;
-                    System.out.println("up left");
+//                    System.out.println("up left");
                 }
             }
             if(grid[y][x - 1].isFlagged() && grid[y][x - 1].isMine()) {
                 adjacentFlagged += 1;
-                System.out.println("left");
+//                System.out.println("left");
             }
         }
         if(y < height - 1) {
             if(x < width - 1) {
                 if(grid[y + 1][x + 1].isFlagged() && grid[y + 1][x + 1].isMine()) {
                     adjacentFlagged += 1;
-                    System.out.println("up right");
+//                    System.out.println("up right");
                 }
             }
             if(grid[y + 1][x].isFlagged() && grid[y + 1][x].isMine()) {
                 adjacentFlagged += 1;
-                System.out.println("up");
+//                System.out.println("up");
             }
         }
         if(x < width - 1) {
             if(grid[y][x + 1].isFlagged() && grid[y][x + 1].isMine()) {
                 adjacentFlagged += 1;
-                System.out.println("right");
+//                System.out.println("right");
             }
         }
 //        System.out.println("adj flag " + adjacentFlagged);
