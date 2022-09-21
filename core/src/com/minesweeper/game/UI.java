@@ -5,13 +5,23 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFontParameter;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.TextField;
+import com.badlogic.gdx.scenes.scene2d.ui.TextField.TextFieldStyle;
 
 public class UI {
     private SpriteBatch batch;
     private ShapeRenderer shapeRenderer;
     private BitmapFont font;
+    private Skin skin;
+
+    private FreeTypeFontGenerator fontGen;
+    private FreeTypeFontParameter fontParam;
+    private TextField textField;
 
     private int windowHeight;
     private int windowWidth;
@@ -46,6 +56,11 @@ public class UI {
         FLAG
     }
 
+    public enum MenuState {
+        OFF,
+        ON,
+    }
+
     private State currState;
     private State lastState;
 
@@ -61,6 +76,11 @@ public class UI {
         this.batch = batch;
         this.shapeRenderer = shapeRenderer;
         this.font = font;
+        this.skin = new Skin();
+        this.textField = new TextField("", this.skin);
+        this.textField.setMessageText("10");
+        this.textField.setPosition(300, 300);
+        
 
         this.windowHeight = Gdx.graphics.getHeight();
         this.windowWidth = Gdx.graphics.getWidth();
@@ -176,6 +196,8 @@ public class UI {
         if(true) {
             renderResult(true);
         }
+
+        textField.draw(batch, 1.0f);
     }
 
     public void processInputs(int x, int y) {
