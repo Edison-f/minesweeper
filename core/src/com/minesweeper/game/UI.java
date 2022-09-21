@@ -5,14 +5,11 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
-import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFontParameter;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField.TextFieldStyle;
-import com.minesweeper.TextInput;
 
 public class UI {
     private SpriteBatch batch;
@@ -67,6 +64,7 @@ public class UI {
     private State lastState;
 
     private MenuState menuState;
+    private MenuState lastMenuState;
 
     Grid grid;
 
@@ -164,8 +162,11 @@ public class UI {
 
     private void renderMenu() {
         batch.begin();
-        
+        textField.setMessageText(textInput.getText());
         textField.draw(batch, 1.0f);
+        font.draw(batch, "test: " + menuState, 30, 100);
+        font.draw(batch, "textInput: " + textInput.getText(), 30, 120);
+        font.draw(batch, "textInput: " + textInput.isOpen(), 30, 140);
         batch.end();
     }
 
@@ -205,6 +206,7 @@ public class UI {
         renderDPad();
         renderInteractButton();
         renderMineCounter();
+
         if(menuState == MenuState.ON) {
             renderMenu();
         }
@@ -334,11 +336,18 @@ public class UI {
         switch(menuState) {
             case ON: 
                 renderMenu();
+                lastMenuState = MenuState.ON;
                 break;
             case OFF:
+                lastMenuState = MenuState.OFF;
                 break;
             case MINE:
-                Gdx.input.getTextInput(textInput, "Number of Mines", Integer.toString(mineCount), "Don't put too many");
+                renderMenu();
+                if(lastMenuState != menuState) {
+                    Gdx.input.getTextInput(textInput, "Number of Mines", textInput.getText(), "Don't put too many");
+                }
+
+                lastMenuState = menuState;
                 break;
         }
     }

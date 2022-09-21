@@ -9,10 +9,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFontParameter;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.utils.ScreenUtils;
-import com.minesweeper.TextInput;
-import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.graphics.Color;
 
 public class Minesweeper extends ApplicationAdapter {
@@ -72,7 +69,7 @@ public class Minesweeper extends ApplicationAdapter {
 		periodic();
 		shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
 		shapeRenderer.setColor(Color.LIGHT_GRAY);
-		shapeRenderer.rect(width / 20, height / 5, (width - width / 10), (height - height / 4));
+//		shapeRenderer.rect(width / 20, height / 5, (width - width / 10), (height - height / 4));
 		shapeRenderer.end();
 		batch.begin();
 		font.draw(batch, "x: " + touchInputs[0], 30, 50);
