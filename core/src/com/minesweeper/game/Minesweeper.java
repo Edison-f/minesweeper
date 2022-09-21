@@ -6,9 +6,12 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFontParameter;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.utils.ScreenUtils;
+import com.minesweeper.TextInput;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.graphics.Color;
 
@@ -23,13 +26,16 @@ public class Minesweeper extends ApplicationAdapter {
 	private ShapeRenderer shapeRenderer;
 	private OrthographicCamera camera;
 
-	BitmapFont font;
+	private FreeTypeFontGenerator fontGen;
+    private FreeTypeFontParameter fontParam;
+	private BitmapFont font;
+	private TextInput textInput;
 	
-	int width;
-	int height;
+	private int width;
+	private int height;
 
-	Grid grid;
-	UI ui;
+	private Grid grid;
+	private UI ui;
 
 	int mineCount = 20;
 
@@ -41,9 +47,13 @@ public class Minesweeper extends ApplicationAdapter {
 		camera = new OrthographicCamera();
 		camera.setToOrtho(false, Gdx.graphics.getWidth() / SCALE, Gdx.graphics.getHeight() / SCALE);
 		
-		font = new BitmapFont(false);
-		
-
+		textInput = new TextInput();
+		fontGen = new FreeTypeFontGenerator(Gdx.files.internal("Philosopher-Regular.ttf"));
+        fontParam = new FreeTypeFontParameter();
+        fontParam.size = 16;
+		fontParam.color = Color.BLACK;
+        font = fontGen.generateFont(fontParam);
+	
 		batch = new SpriteBatch();
 
 		shapeRenderer = new ShapeRenderer();
@@ -52,7 +62,7 @@ public class Minesweeper extends ApplicationAdapter {
 		grid = new Grid(9, 9, mineCount, shapeRenderer, font, batch);
 		grid.resetGrid();
 
-		ui = new UI(batch, shapeRenderer, font, grid, mineCount);
+		ui = new UI(batch, shapeRenderer, font, textInput, grid, mineCount);
 
 	}
 

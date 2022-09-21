@@ -12,6 +12,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField.TextFieldStyle;
+import com.minesweeper.TextInput;
 
 public class UI {
     private SpriteBatch batch;
@@ -19,8 +20,8 @@ public class UI {
     private BitmapFont font;
     private Skin skin;
 
-    private FreeTypeFontGenerator fontGen;
-    private FreeTypeFontParameter fontParam;
+    private TextInput textInput;
+    private TextFieldStyle textFieldStyle;
     private TextField textField;
 
     private int windowHeight;
@@ -59,10 +60,13 @@ public class UI {
     public enum MenuState {
         OFF,
         ON,
+        MINE,
     }
 
     private State currState;
     private State lastState;
+
+    private MenuState menuState;
 
     Grid grid;
 
@@ -72,12 +76,19 @@ public class UI {
     private int flagCounter;
     private int mineCount;
 
-    public UI(SpriteBatch batch, ShapeRenderer shapeRenderer, BitmapFont font, Grid grid, int mineCount) {
+    public UI(SpriteBatch batch, ShapeRenderer shapeRenderer, BitmapFont font, TextInput textInput, Grid grid, int mineCount) {
         this.batch = batch;
         this.shapeRenderer = shapeRenderer;
-        this.font = font;
         this.skin = new Skin();
-        this.textField = new TextField("", this.skin);
+
+        this.font = font;
+
+        this.skin.add("default", font);
+        
+        this.textInput = textInput;
+        this.textFieldStyle = new TextFieldStyle();
+        this.textFieldStyle.font = skin.getFont("default");
+        this.textField = new TextField("", this.textFieldStyle);
         this.textField.setMessageText("10");
         this.textField.setPosition(300, 300);
         
@@ -86,6 +97,7 @@ public class UI {
         this.windowWidth = Gdx.graphics.getWidth();
 
         this.currState = State.NONE;
+        this.menuState = MenuState.OFF;
 
         this.grid = grid;
 
@@ -151,7 +163,10 @@ public class UI {
     }
 
     private void renderMenu() {
-
+        batch.begin();
+        
+        textField.draw(batch, 1.0f);
+        batch.end();
     }
 
     private void renderResult(boolean won) {
@@ -190,14 +205,13 @@ public class UI {
         renderDPad();
         renderInteractButton();
         renderMineCounter();
-        if(true) {
+        if(menuState == MenuState.ON) {
             renderMenu();
         }
         if(true) {
             renderResult(true);
         }
 
-        textField.draw(batch, 1.0f);
     }
 
     public void processInputs(int x, int y) {
@@ -228,6 +242,18 @@ public class UI {
             currState = State.INTERACT;
         } else {
             interactPressed = false;
+        }
+
+        if(menuState == MenuState.OFF && Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
+            menuState = MenuState.ON;
+        } else if(menuState == MenuState.ON && Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
+            menuState = MenuState.OFF;
+        }
+
+        if(menuState == MenuState.ON && Gdx.input.isKeyJustPressed(Input.Keys.ENTER)) {
+            menuState = MenuState.MINE;
+        } else if(menuState == MenuState.MINE && Gdx.input.isKeyJustPressed(Input.Keys.ENTER)) {
+            menuState = MenuState.ON;
         }
     }
     
@@ -302,6 +328,17 @@ public class UI {
                 break;
             case NONE:
                 lastState = State.NONE;
+                break;
+        }
+
+        switch(menuState) {
+            case ON: 
+                renderMenu();
+                break;
+            case OFF:
+                break;
+            case MINE:
+                Gdx.input.getTextInput(textInput, "Number of Mines", Integer.toString(mineCount), "Don't put too many");
                 break;
         }
     }
