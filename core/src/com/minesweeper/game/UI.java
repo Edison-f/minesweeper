@@ -170,6 +170,17 @@ public class UI {
         batch.end();
     }
 
+    private void renderMenuButton() {
+        shapeRenderer.begin(ShapeType.Filled);
+        shapeRenderer.setColor(Color.GRAY);
+        shapeRenderer.rect(30, windowHeight - 200, 100, 100);
+        shapeRenderer.end();
+        shapeRenderer.begin(ShapeType.Line);
+        shapeRenderer.setColor(Color.BLACK);
+        shapeRenderer.rect(30, windowHeight - 200, 100, 100);
+        shapeRenderer.end();
+    }
+
     private void renderResult(boolean won) {
 
     }
@@ -213,7 +224,7 @@ public class UI {
         if(true) {
             renderResult(true);
         }
-
+        renderMenuButton();
     }
 
     public void processInputs(int x, int y) {
